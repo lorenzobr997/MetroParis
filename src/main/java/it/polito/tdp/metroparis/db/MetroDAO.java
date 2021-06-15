@@ -86,6 +86,7 @@ public class MetroDAO {
 			rs.first();
 			int conteggio = rs.getInt("cnt");
 			conn.close();
+			
 			return(conteggio>0);
 		}catch(SQLException e) {
 			throw new RuntimeException("Errore query", e);
