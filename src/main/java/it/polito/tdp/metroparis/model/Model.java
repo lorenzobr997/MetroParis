@@ -1,6 +1,8 @@
 package it.polito.tdp.metroparis.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +60,9 @@ public class Model {
 		BreadthFirstIterator<Fermata, DefaultEdge> bfv = new BreadthFirstIterator<>(this.grafo, partenza);
 		List<Fermata> res = new ArrayList<>();
 		
+		this.prec = new HashMap<>();
+		this.prec.put(partenza, null);
+		
 		bfv.addTraversalListener(new TraversalListener<Fermata, DefaultEdge>(){
 
 			@Override
@@ -75,6 +80,16 @@ public class Model {
 			@Override
 			public void edgeTraversed(EdgeTraversalEvent<DefaultEdge> e) {
 				// TODO Auto-generated method stub
+				DefaultEdge arco =e.getEdge();
+				Fermata a = grafo.getEdgeSource(arco);
+				Fermata b = grafo.getEdgeTarget(arco);
+				if(prec.containsKey(b) && !prec.containsKey(a)) {
+					prec.put(a, b);
+					System.out.println(a + " scoperto da " +b);
+				}else if(prec.containsKey(a) && !prec.containsKey(b)){
+					prec.put(b, a);
+					System.out.println(b + " scoperto da " +a);
+				}
 				
 			}
 
@@ -103,6 +118,21 @@ public class Model {
 				return f;
 		}
 		return null;
+	}
+	
+	public List<Fermata> trovaCammino(Fermata p, Fermata a){
+		fermateRaggiungibili(p);
+		
+		List<Fermata> res = new LinkedList<>();
+		res.add(a);
+		Fermata f = a;
+		while(prec.get(f)!=null) {
+			f = prec.get(f);
+			res.add(0,f);
+		}
+		
+		return res;
+		
 	}
 
 }

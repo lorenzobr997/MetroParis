@@ -11,6 +11,9 @@ public class TestModel {
 		Fermata p = m.trovaFermata("La Fourche");
 		List<Fermata> r = m.fermateRaggiungibili(p);
 		System.out.println(r);
+		Fermata a = m.trovaFermata("Temple");
+		List<Fermata> percorso = m.trovaCammino(p, a);
+		System.out.println(percorso);
 	}
 
 }
